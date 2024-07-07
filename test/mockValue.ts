@@ -30,4 +30,4 @@ export const url = "http://localhost:3000/hw/store";
  * Например: "?bug_id=2"
  */
 
-export const bug_id = "";
+export const bug_id = "?bug_id=10";
