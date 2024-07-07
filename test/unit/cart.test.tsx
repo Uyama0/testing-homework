@@ -86,7 +86,7 @@ describe("Страницы корзины", () => {
     });
   });
 
-  it("Отображается форма", async () => {
+  it("Форма корректно отображается", async () => {
     const store = createMockedStore({}, mockedCartValues);
     const screen = pageRender("/cart", store);
 
@@ -145,5 +145,25 @@ describe("Страницы корзины", () => {
     });
   });
 
-  // классы при неверно введенных данных
+  it("Форма показывает предупреждения при не правильно введеной информации", async () => {
+    const store = createMockedStore({}, mockedCartValues);
+
+    const screen = pageRender("/cart", store);
+
+    await waitFor(async () => {
+      const nameInputElement = screen.getByLabelText("Name");
+      const phoneInputElement = screen.getByLabelText("Phone");
+      const addressInputElement = screen.getByLabelText("Address");
+      const submitButton = screen.getByRole("button", { name: "Checkout" });
+
+      await events.type(phoneInputElement, "номер");
+      await events.type(addressInputElement, "valid address");
+
+      await events.click(submitButton);
+
+      expect(nameInputElement).toHaveClass("is-invalid");
+      expect(phoneInputElement).toHaveClass("is-invalid");
+      expect(addressInputElement).not.toHaveClass("is-invalid");
+    });
+  });
 });

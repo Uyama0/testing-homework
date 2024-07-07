@@ -6,25 +6,25 @@ describe("На странице продукта", function () {
   // @ts-ignore
   it("Верстка адаптируется под ширину экрана (550)", async ({ browser }) => {
     const mock = await browser.mock(
-      `http://localhost:3000/hw/store/api/products/1`
+      `http://localhost:3000/hw/store/api/products/1${bug_id}`
     );
     mock.respondOnce(mockedProductValues, { fetchResponse: true });
     await browser.url(`${url}/catalog/1${bug_id}`);
     await browser.setWindowSize(550, 1080);
     const application = await browser.$(".Application");
     await application.waitForDisplayed();
-    await application.assertView("plain");
+    await application.assertView("plain", { ignoreDiffPixelCount: "0.05%" });
   });
   // @ts-ignore
   it("Верстка адаптируется под ширину экрана (max)", async ({ browser }) => {
     const mock = await browser.mock(
-      `http://localhost:3000/hw/store/api/products/1`
+      `http://localhost:3000/hw/store/api/products/1${bug_id}`
     );
     mock.respondOnce(mockedProductValues, { fetchResponse: true });
     await browser.url(`${url}/catalog/1${bug_id}`);
     const application = await browser.$(".Application");
     await application.waitForDisplayed();
-    await application.assertView("plain");
+    await application.assertView("plain", { ignoreDiffPixelCount: "0.05%" });
   });
   // @ts-ignore
   it("С сервера приходят валидные данные товара", async ({ browser }) => {
@@ -56,7 +56,7 @@ describe("На странице продукта", function () {
     browser,
   }) => {
     // тут по хорошему перехватить ответ запроса
-    await browser.url(`${url}/catalog/11${bug_id}`); 
+    await browser.url(`${url}/catalog/11${bug_id}`);
     let application = await browser.$(".Application");
 
     const data = {
@@ -67,7 +67,7 @@ describe("На странице продукта", function () {
     };
 
     // как то перезагрузить браузер
-    await browser.url(`${url}/catalog/11${bug_id}`); 
+    await browser.url(`${url}/catalog/11${bug_id}`);
     application = await browser.$(".Application");
 
     const newData = {

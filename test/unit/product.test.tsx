@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 
 import { mockedProductValues, mockedCartValues } from "../mockValue";
 import { pageRender, createMockedStore, getLocalStorage } from "../helpers";
-import { waitFor } from "@testing-library/react";
+import { waitFor, cleanup } from "@testing-library/react";
 
 import events from "@testing-library/user-event";
 
@@ -73,6 +73,29 @@ describe("Страница товара", () => {
 
       storage = getLocalStorage();
       expect(storage[1].count).toBe(count + 1);
+    });
+  });
+
+  it("При перезагрузке товары добавленные в корзину сохраняются", async () => {
+    const mocks = {
+      productDetails: mockedProductValues,
+    };
+
+    const store = createMockedStore(mocks);
+    let screen = pageRender(`/catalog/${mockedProductValues.id}`, store);
+
+    await waitFor(async () => {
+      const addButton = screen.getByText("Add to Cart");
+      await events.click(addButton);
+    });
+
+    cleanup();
+
+    screen = pageRender(`/catalog/${mockedProductValues.id}`, store);
+
+    await waitFor(async () => {
+      const cartBadge = screen.getByText("Item in cart");
+      expect(cartBadge).toBeInTheDocument();
     });
   });
 });

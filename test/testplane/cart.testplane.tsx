@@ -8,7 +8,7 @@ describe("На странице корзины", function () {
     browser,
   }) => {
     const mock = await browser.mock(
-      `http://localhost:3000/hw/store/api/products/1`
+      `http://localhost:3000/hw/store/api/products/1${bug_id}`
     );
     mock.respondOnce(mockedProductValues, { fetchResponse: true });
 
